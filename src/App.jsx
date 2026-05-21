@@ -87,6 +87,10 @@ const IconFilter     = () => <svg width="16" height="16" viewBox="0 0 24 24" fil
 const IconChevronDown  = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
 const IconChevronRight = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
 const IconCheck      = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+const IconArrowLeft  = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+const IconTrendUp   = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+const IconTrendDown = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+const IconMinus     = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
 
 // ─── HEADER ───────────────────────────────────────────────────────────────
 function Header({ onRefresh, refreshing, ultimaAtt }) {
@@ -464,6 +468,161 @@ DETRAN-CE | DIET — Diretoria de Educacao para o Transito`
   )
 }
 
+// ─── COMPARATIVO TAB ──────────────────────────────────────────────────────
+function ComparativoTab({ dados, totais, mes }) {
+  // Build comparison: current month vs previous month
+  const mesInt = parseInt(mes)
+  const prevMesInt = mesInt > 1 ? mesInt - 1 : null
+  const current  = dados.find(d => d.mesNum === mesInt)
+  const previous = prevMesInt ? dados.find(d => d.mesNum === prevMesInt) : null
+
+  const metrics = [
+    { key:'alcance',   label:'Alcance Total',       fmt:v => formatarNumero(v), icon:<IconGlobe />,     cor:theme.primary },
+    { key:'escolas',   label:'Escolas Visitadas',   fmt:v => v,                icon:<IconSchool />,    cor:'#0891b2' },
+    { key:'alunos',    label:'Alunos Atendidos',    fmt:v => v,                icon:<IconUsers />,     cor:theme.secondary },
+    { key:'blitz',     label:'Blitz Educativas',     fmt:v => v,                icon:<IconActivity />,  cor:'#7c3aed' },
+    { key:'veiculos',  label:'Veiculos Abordados',  fmt:v => formatarNumero(v), icon:<IconCar />,       cor:'#ea580c' },
+    { key:'cursos',    label:'Cursos Realizados',    fmt:v => v,                icon:<IconBook />,      cor:'#db2777' },
+    { key:'palestras', label:'Palestras',            fmt:v => v,                icon:<IconMegaphone />, cor:'#16a34a' },
+    { key:'interv',    label:'Intervencoes',          fmt:v => formatarNumero(v), icon:<IconActivity />,  cor:'#b45309' },
+    { key:'maisInf',   label:'Acoes Mais Infancia',  fmt:v => v,                icon:<IconStar />,      cor:'#0891b2' },
+  ]
+
+  const calcVariacao = (atual, anterior) => {
+    if (!anterior || anterior === 0) return null
+    return ((atual - anterior) / anterior) * 100
+  }
+
+  const VariacaoBadge = ({ variacao }) => {
+    if (variacao === null) return <span style={{ fontSize:'10px', color:theme.textSecondary, fontWeight:'600' }}>sem dado anterior</span>
+    const isPos = variacao > 0, isNeg = variacao < 0
+    return (
+      <div style={{ display:'flex', alignItems:'center', gap:'3px' }}>
+        {isPos ? <IconTrendUp /> : isNeg ? <IconTrendDown /> : <IconMinus />}
+        <span style={{ fontSize:'11px', fontWeight:'700', color: isPos ? '#16a34a' : isNeg ? '#dc2626' : theme.textSecondary }}>
+          {isPos ? '+' : ''}{variacao.toFixed(1)}%
+        </span>
+      </div>
+    )
+  }
+
+  if (!current) {
+    return (
+      <div style={{ background:'white', border:`1px solid ${theme.border}`, borderRadius:'12px', padding:'16px', marginBottom:'16px' }}>
+        <h3 style={{ margin:'0 0 4px', fontSize:'13px', fontWeight:'700', color:theme.textPrimary }}>Comparativo Mensal</h3>
+        <p style={{ margin:'8px 0 0', fontSize:'12px', color:theme.textSecondary }}>Selecione um mes especifico (nao "Todos") para ver a comparacao.</p>
+      </div>
+    )
+  }
+
+  const prevLabel = prevMesInt ? MESES_COMPLETOS[prevMesInt] : null
+  const currLabel = MESES_COMPLETOS[mesInt]
+
+  return (
+    <div>
+      {/* Banner comparativo */}
+      <div style={{ background:`linear-gradient(135deg, ${theme.primaryDark} 0%, ${theme.primary} 100%)`, borderRadius:'12px', padding:'20px', marginBottom:'16px', display:'flex', alignItems:'center', gap:'16px', flexWrap:'wrap' }}>
+        <div style={{ flex:'1 1 200px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'6px', color:'rgba(255,255,255,0.6)', fontSize:'10px', fontWeight:'700', textTransform:'uppercase', marginBottom:'4px' }}>
+            <IconArrowLeft /> Periodo Anterior
+          </div>
+          <p style={{ margin:0, fontSize:'20px', fontWeight:'800', color:'white' }}>{prevLabel || '—'}</p>
+        </div>
+        <div style={{ color:'rgba(255,255,255,0.3)', fontSize:'28px', fontWeight:'300' }}>→</div>
+        <div style={{ flex:'1 1 200px' }}>
+          <div style={{ color:'rgba(255,255,255,0.6)', fontSize:'10px', fontWeight:'700', textTransform:'uppercase', marginBottom:'4px' }}>Periodo Atual</div>
+          <p style={{ margin:0, fontSize:'20px', fontWeight:'800', color:'#a3e635' }}>{currLabel}</p>
+        </div>
+        <div style={{ flex:'1 1 160px', textAlign:'center', background:'rgba(255,255,255,0.1)', borderRadius:'8px', padding:'12px' }}>
+          <p style={{ margin:0, fontSize:'10px', color:'rgba(255,255,255,0.6)', fontWeight:'700', textTransform:'uppercase' }}>Variacao Alcance</p>
+          {(() => {
+            const v = calcVariacao(current.alcance, previous?.alcance)
+            if (v === null) return <p style={{ margin:'4px 0 0', fontSize:'18px', fontWeight:'800', color:'rgba(255,255,255,0.5)' }}>—</p>
+            return (
+              <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'4px', marginTop:'4px' }}>
+                {v > 0 ? <IconTrendUp /> : <IconTrendDown />}
+                <span style={{ fontSize:'18px', fontWeight:'800', color: v > 0 ? '#86efac' : '#fca5a5' }}>{v > 0 ? '+' : ''}{v.toFixed(1)}%</span>
+              </div>
+            )
+          })()}
+        </div>
+      </div>
+
+      {/* Cards de comparacao */}
+      <div style={{ background:'white', border:`1px solid ${theme.border}`, borderRadius:'12px', padding:'16px', marginBottom:'16px' }}>
+        <h3 style={{ margin:'0 0 4px', fontSize:'13px', fontWeight:'700', color:theme.textPrimary }}>Detalhamento por Indicador</h3>
+        <p style={{ margin:'0 0 14px', fontSize:'11px', color:theme.textSecondary }}>Comparacao direta entre {prevLabel || 'sem dado'} e {currLabel}</p>
+        <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+          {metrics.map(m => {
+            const atual    = current[m.key]  || 0
+            const anterior = previous ? (previous[m.key] || 0) : null
+            const variacao = calcVariacao(atual, anterior)
+            const diff     = atual - (anterior || 0)
+            return (
+              <div key={m.key} style={{ display:'flex', alignItems:'center', gap:'12px', padding:'10px', background:'#f8f9fa', borderRadius:'8px', border:`1px solid ${theme.border}` }}>
+                <div style={{ width:'32px', height:'32px', borderRadius:'6px', background:m.cor+'20', display:'flex', alignItems:'center', justifyContent:'center', color:m.cor, flexShrink:0 }}>
+                  {m.icon}
+                </div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <p style={{ margin:'0 0 2px', fontSize:'11px', fontWeight:'700', color:theme.textPrimary }}>{m.label}</p>
+                  <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
+                    {anterior !== null && (
+                      <span style={{ fontSize:'10px', color:theme.textSecondary }}>
+                        <strong>{prevLabel}:</strong> {m.fmt(anterior)}
+                      </span>
+                    )}
+                    <span style={{ fontSize:'10px', fontWeight:'700', color:m.cor }}>
+                      <strong>{currLabel}:</strong> {m.fmt(atual)}
+                    </span>
+                  </div>
+                </div>
+                <div style={{ textAlign:'right', flexShrink:0 }}>
+                  <VariacaoBadge variacao={variacao} />
+                  {diff !== 0 && (
+                    <p style={{ margin:'2px 0 0', fontSize:'10px', fontWeight:'600', color: diff > 0 ? '#16a34a' : '#dc2626' }}>
+                      {diff > 0 ? '+' : ''}{m.fmt(diff)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Grafico de barras comparativo */}
+      <div style={{ background:'white', border:`1px solid ${theme.border}`, borderRadius:'12px', padding:'16px', marginBottom:'16px' }}>
+        <h3 style={{ margin:'0 0 4px', fontSize:'13px', fontWeight:'700', color:theme.textPrimary }}>Grafico Comparativo</h3>
+        <p style={{ margin:'0 0 12px', fontSize:'11px', color:theme.textSecondary }}>{prevLabel || 'Anterior'} vs {currLabel}</p>
+        <ResponsiveContainer width="100%" height={240}>
+          <BarChart data={[
+            { label: prevLabel || 'Anterior', ...(previous || {}) },
+            { label: currLabel, ...current },
+          ]} margin={{ top:5, right:5, left:-15, bottom:0 }} barCategoryGap="30%">
+            <CartesianGrid strokeDasharray="3 3" stroke={theme.border} vertical={false} />
+            <XAxis dataKey="label" tick={{ fontSize:10, fill:theme.textSecondary, fontWeight:'600' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize:10, fill:theme.textSecondary }} axisLine={false} tickLine={false} />
+            <Tooltip contentStyle={{ borderRadius:8, border:`1px solid ${theme.border}`, fontSize:12 }} formatter={(v,k) => [typeof v === 'number' ? v.toLocaleString('pt-BR') : v, k]} />
+            <Legend wrapperStyle={{ fontSize:11, fontWeight:'600' }} />
+            <Bar dataKey="alcance"   fill={theme.primary}   name="Alcance"   radius={[4,4,0,0]} />
+            <Bar dataKey="escolas"   fill="#0891b2"        name="Escolas"   radius={[4,4,0,0]} />
+            <Bar dataKey="alunos"    fill={theme.secondary} name="Alunos"    radius={[4,4,0,0]} />
+            <Bar dataKey="blitz"     fill="#7c3aed"        name="Blitz"     radius={[4,4,0,0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Observacao */}
+      <div style={{ padding:'10px 14px', background:theme.primaryLight, borderRadius:'8px', borderLeft:`3px solid ${theme.primary}`, fontSize:'11px', color:theme.textSecondary, marginBottom:'16px' }}>
+        <strong style={{ color:theme.primary }}>Nota:</strong>{" "}
+        {previous
+          ? `Variacao calculada em relacao ao mes anterior (${prevLabel}). Dados positivos indicam crescimento.`
+          : `Sem dados do mes anterior para comparacao. Selecione Fevereiro ou posterior para ver variacao.`}
+      </div>
+    </div>
+  )
+}
+
 // ─── TABELA ANALITICA ──────────────────────────────────────────────────────
 function AnalyticalTable({ dados, totais, ano, mes }) {
   const [busca, setBusca] = useState('')
@@ -560,6 +719,7 @@ function Tabs({ activeTab, setActiveTab }) {
     { id:'satisfacao',  label:'Satisfacao' },
     { id:'dados',       label:'Dados' },
     { id:'relatorio',   label:'Relatorio' },
+    { id:'comparativo', label:'Comparativo' },
   ]
   return (
     <div style={{ display:'flex', overflowX:'auto', gap:'4px', marginBottom:'16px', padding:'4px', background:'white', borderRadius:'10px', border:`1px solid ${theme.border}` }}>
@@ -757,6 +917,15 @@ export default function App() {
             <h3 style={{ margin:'0 0 4px', fontSize:'15px', fontWeight:'800', color:theme.textPrimary }}>Relatorio Executivo</h3>
             <p style={{ margin:'0 0 12px', fontSize:'11px', color:theme.textSecondary }}>Resumo automatico para prestacao de contas</p>
             <ExecutiveReport totais={totais} dados={dados} ano={ano} mes={mes} macroregioes={apiData?.macroregioes} />
+          </div>
+        )}
+
+        {/* COMPARATIVO */}
+        {activeTab === 'comparativo' && (
+          <div>
+            <h3 style={{ margin:'0 0 4px', fontSize:'15px', fontWeight:'800', color:theme.textPrimary }}>Comparativo Mensal</h3>
+            <p style={{ margin:'0 0 12px', fontSize:'11px', color:theme.textSecondary }}>Este mes vs mes anterior — fonte: Google Sheets</p>
+            <ComparativoTab dados={dados} totais={totais} mes={mes} />
           </div>
         )}
       </main>
