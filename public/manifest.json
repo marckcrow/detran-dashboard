@@ -1,19 +1,20 @@
 {
-  "name": "DETRAN Dashboard",
-  "short_name": "DETRAN",
-  "description": "Dashboard para acompanhamento dos dados da DIET/DETRAN-CE",
+  "name": "Painel DIET — DETRAN-CE",
+  "short_name": "Painel DIET",
+  "description": "Monitoramento de acoes educativas de transito — Diretoria de Educacao para o Transito do Ceara",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1565c0",
-  "theme_color": "#1565c0",
+  "background_color": "#007A3D",
+  "theme_color": "#007A3D",
+  "orientation": "any",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "/detran-logo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/detran-logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
