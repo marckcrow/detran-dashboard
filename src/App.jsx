@@ -33,7 +33,7 @@ const sampleData = {
   totals: {
     atendimentos: 271,
     alcance: 8132,
-    escolas: 11,
+    cidades: 11,
     meses: 5
   }
 }
@@ -41,8 +41,15 @@ const sampleData = {
 const COLORS = ['#1565c0', '#1976d2', '#42a5f5', '#90caf9']
 
 function MetricCard({ icon: Icon, value, label, trend, color = 'primary' }) {
+  const colorClass = {
+    primary: 'from-blue-700 to-blue-500',
+    green: 'from-green-700 to-green-500',
+    purple: 'from-purple-700 to-purple-500',
+    orange: 'from-orange-700 to-orange-500'
+  }[color] || 'from-blue-700 to-blue-500'
+  
   return (
-    <div className={`bg-gradient-to-br from-${color} to-secondary rounded-xl p-4 text-white shadow-lg`}>
+    <div className={`bg-gradient-to-br ${colorClass} rounded-xl p-4 text-white shadow-lg`}>
       <div className="flex items-center justify-between mb-2">
         <Icon size={24} className="opacity-90" />
         {trend && (
@@ -51,7 +58,7 @@ function MetricCard({ icon: Icon, value, label, trend, color = 'primary' }) {
           </span>
         )}
       </div>
-      <div className="text-2xl font-bold mb-1">{value.toLocaleString('pt-BR')}</div>
+      <div className="text-2xl font-bold mb-1">{(value || 0).toLocaleString('pt-BR')}</div>
       <div className="text-xs opacity-90">{label}</div>
     </div>
   )
