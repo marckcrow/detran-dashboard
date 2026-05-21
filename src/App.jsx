@@ -220,7 +220,7 @@ function Header({ onRefresh, refreshing, ultimaAtt }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: `1px solid ${theme.primary}` }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '44px', height: '44px', background: 'white', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <img src="/detran-logo.svg" alt="DETRAN" style={{ width: '36px', height: '36px' }}
+              <img src="/detran-logo.png" alt="DETRAN" style={{ width: '44px', height: '44px' }}
                 onError={e => { e.target.style.display = 'none' }} />
             </div>
             <div>
@@ -1045,7 +1045,7 @@ export default function App() {
       <div style={{ minHeight: '100vh', background: theme.background, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ width: '60px', height: '60px', background: theme.primary, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-            <img src="/detran-logo.svg" alt="DETRAN" style={{ width: '48px', height: '48px' }}
+            <img src="/detran-logo.png" alt="DETRAN" style={{ width: '48px', height: '48px' }}
               onError={e => { e.target.style.display = 'none' }} />
           </div>
           <div style={{ width: '40px', height: '40px', border: `4px solid ${theme.border}`, borderTopColor: theme.primary, borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto' }} />
@@ -1168,12 +1168,67 @@ export default function App() {
       </main>
 
       <footer style={{
-        background: theme.primaryDark, color: 'rgba(255,255,255,0.5)',
-        textAlign: 'center', padding: '16px', fontSize: '11px', fontWeight: '500',
+        background: theme.primaryDark, color: 'white',
         marginTop: '32px'
       }}>
-        DETRAN-CE | DIET — Diretoria de Educacao para o Transito |
-        {new Date().getFullYear()} | Atualize dados ate o dia 05 de cada mes
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '24px 16px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+            {/* Coluna 1: Identidade */}
+            <div style={{ flex: '1 1 200px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                <img src="/detran-logo.png" alt="DETRAN" style={{ width: '36px', height: '36px' }}
+                  onError={e => { e.target.style.display = 'none' }} />
+                <div>
+                  <p style={{ margin: 0, fontWeight: '800', fontSize: '13px' }}>DETRAN-CE</p>
+                  <p style={{ margin: 0, fontSize: '10px', opacity: 0.7 }}>DIET — Diretoria de Educacao para o Transito</p>
+                </div>
+              </div>
+              <p style={{ margin: '8px 0 0', fontSize: '10px', opacity: 0.6 }}>
+                Painel de monitoramento de acoes educativas, atendimentos e alcance territorial.
+              </p>
+            </div>
+
+            {/* Coluna 2: Contato do Responsavel */}
+            <div style={{ flex: '1 1 280px' }}>
+              <p style={{ margin: '0 0 8px', fontSize: '11px', fontWeight: '800', color: 'rgba(255,255,255,0.9)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Responsavel pelo Projeto
+              </p>
+              <p style={{ margin: '0 0 6px', fontSize: '13px', fontWeight: '700', color: 'white' }}>
+                Marcondes Rodrigues
+              </p>
+              <p style={{ margin: '0 0 8px', fontSize: '11px', color: 'rgba(255,255,255,0.7)' }}>
+                Analista de Tecnologia da Informacao
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <a href="https://wa.me/5585985035473" target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#25d366', fontSize: '11px', fontWeight: '600', textDecoration: 'none' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.11.544 4.106 1.545 5.85L0 24l6.37-1.572A11.94 11.94 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm5.894 17.073c-.373.842-1.88 1.62-2.77 1.72-.806.093-1.847.17-5.392-1.21-4.228-1.64-6.955-5.68-7.17-5.94-.22-.26-.022-.403.16-.669.165-.24.372-.629.555-.943.186-.314.393-.26.658-.155.27.107 4.28 2.015 5.076 2.381.816.373 1.384.575 1.586.644.25.085.404.02.552-.31.146-.33.624-1.056.796-1.424.172-.368.345-.302.584-.182.238.12.951.448 1.775.695 1.338.402 2.586.344 3.532.13.948-.215 1.52-.71 1.682-.835.162-.125.285-.208.326-.325.041-.117.041-.217.027-.334-.014-.117-.074-.272-.396-.485z"/></svg>
+                  (85) 98503-5473 — WhatsApp
+                </a>
+                <a href="mailto:jose.marcondes@detran.ce.gov.br"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#a3e635', fontSize: '11px', fontWeight: '600', textDecoration: 'none' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a3e635" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  jose.marcondes@detran.ce.gov.br
+                </a>
+                <a href="mailto:marcondesjr.ti@gmail.com"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.7)', fontSize: '11px', fontWeight: '600', textDecoration: 'none' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  marcondesjr.ti@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Barra inferior */}
+          <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '16px', paddingTop: '12px', display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'space-between', alignItems: 'center' }}>
+            <p style={{ margin: 0, fontSize: '10px', color: 'rgba(255,255,255,0.4)', fontWeight: '500' }}>
+              DETRAN-CE | DIET — Diretoria de Educacao para o Transito | {new Date().getFullYear()} | Atualize dados ate o dia 05 de cada mes
+            </p>
+            <p style={{ margin: 0, fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontWeight: '500' }}>
+              Desenvolvido por Marcondes Rodrigues — DETRAN-CE
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   )
